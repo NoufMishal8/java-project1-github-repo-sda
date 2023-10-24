@@ -43,6 +43,15 @@ public class UserController {
     public String updateUser (@PathVariable String Userid , @RequestBody User user){
         return userServiceImpl.updateUser(Userid,user);
     }
+    @PatchMapping("/users/patchUser/{Userid}")
+    public String patchUser(@PathVariable String Userid, @RequestBody User UserUpdate) {
+        return userServiceImpl.patchUser(Userid, UserUpdate);
+    }
 
+    @DeleteMapping("/users/delete/{Userid}")
+    public String deleteUser(@PathVariable String Userid) {
+        userServiceImpl.deleteUser(Userid);
+        return "User deleted";
+    }
 
 }

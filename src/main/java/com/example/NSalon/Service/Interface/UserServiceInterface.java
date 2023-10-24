@@ -10,4 +10,6 @@ public interface UserServiceInterface {
 
     public User addUser(User user);
     String updateUser(String userid, User user);
+    String patchUser(String Userid, User UserUpdate);
+    void deleteUser(String Userid);
 }

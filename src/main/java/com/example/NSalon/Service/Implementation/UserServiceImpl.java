@@ -41,6 +41,30 @@ public class UserServiceImpl implements UserServiceInterface {
         }
     }
 
+
+    @Override
+public String patchUser(String Userid, User UserUpdate) {
+    Optional<User> userFound = userRepository.findById(Userid);
+
+    if (userFound.isPresent()) {
+        User existingUser = userFound.get();
+
+        if (UserUpdate.getUserName() != null) {
+            existingUser.setUserName(UserUpdate.getUserName());
+        }
+
+        userRepository.save(existingUser);
+
+        return "User details updated";
+    } else {
+        return "User with user id " + Userid + " not found";
+    }
+}
+
+    public void deleteUser(String Userid){
+        userRepository.deleteById(Userid);
+    }
+
 }
 
 
