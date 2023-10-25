@@ -47,7 +47,7 @@ public class UserController {
     public String patchUser(@PathVariable String Userid, @RequestBody User UserUpdate) {
         return userServiceImpl.patchUser(Userid, UserUpdate);
     }
-
+//test github
     @DeleteMapping("/users/delete/{Userid}")
     public String deleteUser(@PathVariable String Userid) {
         userServiceImpl.deleteUser(Userid);
