@@ -9,7 +9,7 @@ public interface UserServiceInterface {
     public List<User> getAllUsers();
 
     public User addUser(User user);
-    String updateUser(String userid, User user);
+    String updateUser(String Userid, User user);
     String patchUser(String Userid, User UserUpdate);
     void deleteUser(String Userid);
 }

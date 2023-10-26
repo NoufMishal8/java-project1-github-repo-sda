@@ -1,6 +1,9 @@
 package com.example.NSalon.Controller;
 
+import com.example.NSalon.Entity.ServiceInfo;
 import com.example.NSalon.Entity.User;
+//import com.example.NSalon.Repository.ServiceRepository;
+import com.example.NSalon.Repository.ServiceRepository;
 import com.example.NSalon.Service.Implementation.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +41,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
         }
     }
+    @Autowired
+    private ServiceRepository serviceInfoRepository;
+
+    @PostMapping("/AddService")
+    public ResponseEntity<ServiceInfo> AddService(@RequestBody ServiceInfo serviceInfo) {
+        ServiceInfo savedService = serviceInfoRepository.save(serviceInfo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedService);
+    }
 
     @PutMapping("/users/update/{Userid}")
     public String updateUser (@PathVariable String Userid , @RequestBody User user){
@@ -47,7 +58,6 @@ public class UserController {
     public String patchUser(@PathVariable String Userid, @RequestBody User UserUpdate) {
         return userServiceImpl.patchUser(Userid, UserUpdate);
     }
-//test github
     @DeleteMapping("/users/delete/{Userid}")
     public String deleteUser(@PathVariable String Userid) {
         userServiceImpl.deleteUser(Userid);

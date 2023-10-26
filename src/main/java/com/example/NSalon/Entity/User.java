@@ -1,17 +1,25 @@
 package com.example.NSalon.Entity;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.springframework.lang.NonNull;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
 
 
 @Entity
-    @Table(name = "User")
+@Table(name = "User")
+//@Inheritance(strategy = InheritanceType.JOINED)
     public class User {
-        @Id
-        private String Userid;
+
+
+
+            @Id
+            private String Userid;
+
+
+
+
+
         private String Username;
         private String Email;
         private String PhoneNumber;
@@ -74,8 +82,8 @@ import java.util.Objects;
     @Override
     public String toString() {
         return "User{" +
-                "Userid=" + Userid +
-                "UserName" + Username + '\'' +
+                "Userid='" + Userid + '\'' +
+                ", Username='" + Username + '\'' +
                 ", Email='" + Email + '\'' +
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 '}';
