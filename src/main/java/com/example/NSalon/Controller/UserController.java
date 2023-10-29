@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping("/users/add")
     public ResponseEntity<String> addUser(@RequestBody User user) {
         try {
-            User admin1 = userServiceImpl.addUser(user); // Call the method on the injected instance
+            User admin1 = userServiceImpl.addUser(user);
             String message = "User Created Successfully";
             return ResponseEntity.status(HttpStatus.CREATED).body(message);
         } catch (Exception e) {

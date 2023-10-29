@@ -2,6 +2,7 @@ package com.example.NSalon.Controller;
 import com.example.NSalon.Entity.User;
 import com.example.NSalon.Repository.UserRepository;
 import com.example.NSalon.Service.Implementation.UserServiceImpl;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,18 +47,13 @@ public class UserControllerTests {
 
     @BeforeEach
     public void Setup(){
-//        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-
-//        User user1 = new User("1L", "U","UU","0111111" );
-//
-////        User user2 = new User("U2" ,"HHH","H","02222222");
-//
-//        userRepository.saveAll(List.of(user1 ));
+        User user1 = new User("C1" , "Nouf" );
+        User user2 = new User("C2" ,"Faisal");
+        userRepository.saveAll(List.of(user1 ,user2));
 
     }
-
 // ...
 
 
@@ -65,55 +61,48 @@ public class UserControllerTests {
 // ...
 
     @Test
-    public void testGetAllUsers() throws Exception {
-        MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/users"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("C1").value("user1"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[1].username").value("user2"))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[2].username").value("user3"))
+    void getAllUsersTest() throws Exception{
+        MvcResult mvcResult = mockMvc.perform(get("/all"))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Nouf"));
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Faisal"));
+
     }
 
 
-//    @Test
-//    public void testGetAllUsers() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/users")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
-//    }
+
     @Test
-    void PostUserTest() throws Exception {
+    public void testPostUser() throws Exception {
+        // Define the JSON payload for the new user
+        String userJson = "{\"userId\": 1, \"username\": \"newuser\"}";
 
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/users/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson))
+                .andExpect(MockMvcResultMatchers.status().isOk());
 
-        User newUser = new User("1L", "U","UU","0111111");
-
-        String requestBody = objectMapper.writeValueAsString (newUser);
-
-        MvcResult mvcResult = mockMvc.perform(post("/users/add")
-                                .content(requestBody)
-                                .contentType(MediaType.APPLICATION_JSON)
-                        )
-
-                        .andExpect(status().isCreated())
-                        .andReturn();
-        assertTrue(mvcResult.getResponse().getContentAsString().contains("User Added Successfully"));
-
-
-    }}
-
-
+        // Verify that the user has been added to the database
+        User addedUser = userRepository.findByUsername("Fahda");
+        assertNotNull(addedUser);
+        assertEquals(1, addedUser.getUserid());
+        assertEquals("Fahda", addedUser.getUserName());
+    }
+}
 
 
 
 
 
+
+
+
+
+        // C
 //
-//        // C
-//
-//        mockUsers.add(new User("D1","Duaa","d@hotmail.com","012121"));
+//        mockUsers.add(new User("D1","Nouf","n@hotmail.com","012121"));
 //        mockUsers.add(new User("F1","Faisal","F@hotmail.com","918227"));
 //
 //        when(userService.getAllUsers()).thenReturn(mockUsers);
@@ -122,6 +111,6 @@ public class UserControllerTests {
 //                .andExpect(status().isOk())
 //                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
 //                .andExpect(jsonPath("$", hasSize(2))) // Ensure you have 2 users
-//                .andExpect(jsonPath("$[0].username", is("Duaa")))
-//                .andExpect(jsonPath("$[1].username", is("user2")));
+//                .andExpect(jsonPath("$[0].username", is("Nouf")))
+//                .andExpect(jsonPath("$[1].username", is("Faisal")));
 //    }
